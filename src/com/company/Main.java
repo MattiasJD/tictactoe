@@ -1,19 +1,17 @@
-package com.company;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        ClearPB();
         Start();
     }
 
     private static void Start() {
         String[] mes = {"X's turn:", "O's turn:"};
-        if(round%2==0){
+        if (round % 2 == 0) {
             System.out.println(mes[0]);
-        }
-        else{
+        } else {
             System.out.println(mes[1]);
         }
         Turn();
@@ -28,8 +26,16 @@ public class Main {
     }
 
     private static char[] parcel = {'-', '-', '-', '-', '-', '-', '-', '-', '-', '-'};
+    private static int[] pb = new int[9];
     private static int round = 0;
     private static int[][] winCom = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 4, 8}, {2, 4, 6}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
+
+
+    private static void ClearPB() {
+        for (int i = 0; i < pb.length; i++) {
+            pb[i] = -1;
+        }
+    }
 
     private static void show() {
         System.out.println(parcel[0] + " | " + parcel[1] + " | " + parcel[2]);
@@ -39,21 +45,20 @@ public class Main {
 
     private static void Turn() {
         int playersPlay = 0;
-        int[] pb = new int[9];
         Scanner scan = new Scanner(System.in);
         int sel = 0;
-        int checkClear = 0;
+        int checker = 0;
         show();
         do {
             System.out.print("Please select position:");
             sel = scan.nextInt();
-            int arrayIdChoose = sel;
-            if (Arrays.stream(pb).anyMatch(i -> i == arrayIdChoose)) {
-                System.out.println("Wrong number");
+            int thisSel = sel;
+            if (Arrays.stream(pb).anyMatch(i -> i == thisSel)) {
+                System.out.println("Sorry, wrong number...");
             } else {
-                checkClear++;
+                checker++;
             }
-        } while (checkClear == 0);
+        } while (checker == 0);
         if (round % 2 == 0) {
             parcel[sel] = 'X';
         } else {
@@ -66,12 +71,13 @@ public class Main {
     }
 
     private static void Check() {
-        if (round < 8) {
+        if (round < 9) {
             for (int i = 0; i < winCom.length; i++) {
-                if (parcel[winCom[i][0]] == 'X' && parcel[winCom[i - 1][1]] == 'X' && parcel[winCom[i][2]] == 'X') {
+                if (parcel[winCom[i][0]] == 'X' && parcel[winCom[i][1]] == 'X' && parcel[winCom[i][2]] == 'X') {
                     End();
                     return;
-                } if (parcel[winCom[i][0]] == 'O' && parcel[winCom[i][1]] == 'O' && parcel[winCom[i][2]] == 'O') {
+                }
+                if (parcel[winCom[i][0]] == 'O' && parcel[winCom[i][1]] == 'O' && parcel[winCom[i][2]] == 'O') {
                     End();
                     return;
                 }
